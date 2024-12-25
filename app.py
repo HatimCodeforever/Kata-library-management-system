@@ -1,5 +1,4 @@
 import streamlit as st
-
 from models import Book, Session
 
 # Initialize database session
@@ -31,5 +30,32 @@ def add_book():
                 session.commit()
                 st.success(f"Book '{title}' added successfully!")
 
-# Display the add book form
-add_book()
+def borrow_book():
+    st.subheader("Borrow a Book")
+
+    # Input field for book ID (ISBN)
+    book_id = st.text_input("Enter Book ID (ISBN)")
+
+    if st.button("Borrow Book"):
+        # Check if the book exists
+        book = session.query(Book).filter_by(id=book_id).first()
+
+        if not book:
+            st.error("No book found with this ID.")
+        elif not book.available:
+            st.error("This book is currently not available for borrowing.")
+        else:
+            # Mark the book as borrowed (update availability)
+            book.available = False
+            session.commit()
+            st.success(f"You've successfully borrowed '{book.title}' by {book.author}!")
+
+# Sidebar for navigation
+st.sidebar.title("Library Management System")
+sidebar_option = st.sidebar.radio("Select an option", ["Add Book", "Borrow Book"])
+
+# Display the selected functionality
+if sidebar_option == "Add Book":
+    add_book()
+elif sidebar_option == "Borrow Book":
+    borrow_book()
