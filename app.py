@@ -50,12 +50,31 @@ def borrow_book():
             session.commit()
             st.success(f"You've successfully borrowed '{book.title}' by {book.author}!")
 
+def view_available_books():
+    st.subheader("Available Books")
+
+    # Fetch available books from the database
+    available_books = session.query(Book).filter_by(available=True).all()
+
+    if available_books:
+        # Display available books with labels
+        for book in available_books:
+            st.write(f"**Title**: {book.title}")
+            st.write(f"**ISBN (Book ID)**: {book.id}")
+            st.write(f"**Author**: {book.author}")
+            st.write(f"**Publication Year**: {book.year}")
+            st.write("---")
+    else:
+        st.write("No books are currently available.")
+
 # Sidebar for navigation
 st.sidebar.title("Library Management System")
-sidebar_option = st.sidebar.radio("Select an option", ["Add Book", "Borrow Book"])
+sidebar_option = st.sidebar.radio("Select an option", ["Add Book", "Borrow Book", "View Available Books"])
 
 # Display the selected functionality
 if sidebar_option == "Add Book":
     add_book()
 elif sidebar_option == "Borrow Book":
     borrow_book()
+elif sidebar_option == "View Available Books":
+    view_available_books()
