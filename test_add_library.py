@@ -1,7 +1,7 @@
 import unittest
 from models import Book, Session
 
-class TestLibraryManagement(unittest.TestCase):
+class TestAddLibraryManagement(unittest.TestCase):
     def setUp(self):
         # Create a new session for each test
         self.session = Session()
