@@ -13,7 +13,7 @@ This is a simple Library Management System developed in Python using Streamlit f
 
 - Python 3.9 or above
 - Streamlit
-- SQLite
+- SQLAlchemy
 
 ## Setup
 
