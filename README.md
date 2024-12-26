@@ -1,5 +1,3 @@
-Here’s how you can expand your README with the steps you mentioned:
-
 ```markdown
 # Library Management System
 
