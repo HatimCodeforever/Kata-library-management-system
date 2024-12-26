@@ -50,6 +50,26 @@ def borrow_book():
             session.commit()
             st.success(f"You've successfully borrowed '{book.title}' by {book.author}!")
 
+def return_book():
+    st.subheader("Return a Book")
+
+    # Input field for book ID (ISBN)
+    book_id = st.text_input("Enter Book ID (ISBN)")
+
+    if st.button("Return Book"):
+        # Check if the book exists
+        book = session.query(Book).filter_by(id=book_id).first()
+
+        if not book:
+            st.error("No book found with this ID.")
+        elif book.available:
+            st.error("This book is already available.")
+        else:
+            # Mark the book as returned (update availability)
+            book.available = True
+            session.commit()
+            st.success(f"Thank you! You've successfully returned '{book.title}' by {book.author}.")
+
 def view_available_books():
     st.subheader("Available Books")
 
@@ -69,12 +89,14 @@ def view_available_books():
 
 # Sidebar for navigation
 st.sidebar.title("Library Management System")
-sidebar_option = st.sidebar.radio("Select an option", ["Add Book", "Borrow Book", "View Available Books"])
+sidebar_option = st.sidebar.radio("Select an option", ["Add Book", "Borrow Book", "Return Book", "View Available Books"])
 
 # Display the selected functionality
 if sidebar_option == "Add Book":
     add_book()
 elif sidebar_option == "Borrow Book":
     borrow_book()
+elif sidebar_option == "Return Book":
+    return_book()
 elif sidebar_option == "View Available Books":
     view_available_books()
